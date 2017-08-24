@@ -13823,8 +13823,12 @@ qvw/NZ3FJNY7GQgAAAAASUVORK5CYII=
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="&#38382;&#39064;-7---&#22238;&#31572;:">&#38382;&#39064; 7 - &#22238;&#31572;:<a class="anchor-link" href="#&#38382;&#39064;-7---&#22238;&#31572;:">&#182;</a></h3><ul>
-<li><strong>网格搜索法是一种对参数值的遍历方法，将估计函数的参数通过交叉验证来得到最优的学习算法。 也就是将各个参数的取值进行排列组合，列出所有可能的组合来生成网格。</strong></li>
-<li><strong>拟合函数尝试所有的参数组合，并返回分类器，自动调整至最佳参数组合。可通过 <code>clf.best_params_</code> 来获得最佳参数。</strong></li>
+<li><del><strong>网格搜索法是一种对参数值的遍历方法，将估计函数的参数通过交叉验证来得到最优的学习算法。 也就是将各个参数的取值进行排列组合，列出所有可能的组合来生成网格。</strong></del></li>
+<li><del><strong>拟合函数尝试所有的参数组合，并返回分类器，自动调整至最佳参数组合。可通过 <code>clf.best_params_</code> 来获得最佳参数。</strong></del></li>
+</ul>
+<h4 id="NEW">NEW<a class="anchor-link" href="#NEW">&#182;</a></h4><ul>
+<li>网格搜索法是指对于模型给定的参数进行交叉验证，将各个参数的取值进行排列组合，列出所有可能的组合结果生成网格。</li>
+<li>网格由kener和c等不同参数组成的，然后将每组参数用于SVM或DecisionTreeClassifier等训练，然后使用交叉验证对结果进行评估，选出最优模型。参数值如<code>parameters = {'kernel':('linear', 'rbf'), 'C':[1, 10]}</code>。</li>
 </ul>
 
 </div>
@@ -13852,10 +13856,41 @@ qvw/NZ3FJNY7GQgAAAAASUVORK5CYII=
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="&#38382;&#39064;-8---&#22238;&#31572;&#65306;">&#38382;&#39064; 8 - &#22238;&#31572;&#65306;<a class="anchor-link" href="#&#38382;&#39064;-8---&#22238;&#31572;&#65306;">&#182;</a></h3><ul>
-<li><strong>K折交叉验证法是把数据集分为k个子集，其中一个作为测试集，其余的K-1作为训练集。交叉验证重复k次，每次选择一个子集作为测试集，并将k次的平均交叉验证识别正确率作为结果。优点：所有的样本都被作为了训练集和测试集，每个样本都被验证一次。</strong></li>
-<li><strong>GridSearchCV通过cv参数来确定交叉验证策略，cv可以是整数或者交叉验证生成器或一个可迭代器等。</strong></li>
-<li><strong>GridSearchCV中的<code>cv_results_</code>可以作为参数设置的数组索引，<code>cv_results_</code>能够输出一个dict，其中包括相关参数的名称以及对应的值。</strong></li>
-<li><strong>如果网格搜索时不使用交叉验证则可能使得模型泛化能力无法达到最优,使模型训练的结果不可靠。 通过交叉验证来确定最佳效果参数。</strong></li>
+<li><del><strong>K折交叉验证法是把数据集分为k个子集，其中一个作为测试集，其余的K-1作为训练集。交叉验证重复k次，每次选择一个子集作为测试集，并将k次的平均交叉验证识别正确率作为结果。优点：所有的样本都被作为了训练集和测试集，每个样本都被验证一次。</strong></del></li>
+<li><del><strong>GridSearchCV通过cv参数来确定交叉验证策略，cv可以是整数或者交叉验证生成器或一个可迭代器等。</strong></del></li>
+<li><del><strong>GridSearchCV中的<code>cv_results_</code>可以作为参数设置的数组索引，<code>cv_results_</code>能够输出一个dict，其中包括相关参数的名称以及对应的值。</strong></del></li>
+<li><del><strong>如果网格搜索时不使用交叉验证则可能使得模型泛化能力无法达到最优,使模型训练的结果不可靠。 通过交叉验证来确定最佳效果参数。</strong></del></li>
+</ul>
+<h4 id="NEW">NEW<a class="anchor-link" href="#NEW">&#182;</a></h4><ul>
+<li><strong>K折交叉验证法是将训练集分成K份，其中的K-1份作为训练集，剩余一份作为验证集，然后依次将第二份作为验证集，其余的K-1份作为训练集，进行K次训练后，最后取K次结果的平均值。</strong></li>
+<li><strong>网格搜索法是通过比较不同参数下K折交叉验证的结果来选取最优参数值，即将所有候选参数进行排列组合，分别对不同参数进行交叉验证，然后比较每个模型的运算决定系数，选取得分最高的作为最优参数组合。</strong></li>
+<li><p><strong><code>cv_results_</code>属性能告诉我们验证集、预测集的分数以及分数的平均值、标准方差等。<code>cv_results_</code>是个字典，返回最优情况的参数等详细内容，如下：</strong></p>
+
+<pre><code>{
+'param_kernel': masked_array(data = ['poly', 'poly', 'rbf', 'rbf'],
+                           mask = [False False False False]...)
+'param_gamma': masked_array(data = [-- -- 0.1 0.2],
+                          mask = [ True  True False False]...),
+'param_degree': masked_array(data = [2.0 3.0 -- --],
+                           mask = [False False  True  True]...),
+'split0_test_score'  : [0.8, 0.7, 0.8, 0.9],
+'split1_test_score'  : [0.82, 0.5, 0.7, 0.78],
+'mean_test_score'    : [0.81, 0.60, 0.75, 0.82],
+'std_test_score'     : [0.02, 0.01, 0.03, 0.03],
+'rank_test_score'    : [2, 4, 3, 1],
+'split0_train_score' : [0.8, 0.9, 0.7],
+'split1_train_score' : [0.82, 0.5, 0.7],
+'mean_train_score'   : [0.81, 0.7, 0.7],
+'std_train_score'    : [0.03, 0.03, 0.04],
+'mean_fit_time'      : [0.73, 0.63, 0.43, 0.49],
+'std_fit_time'       : [0.01, 0.02, 0.01, 0.01],
+'mean_score_time'    : [0.007, 0.06, 0.04, 0.04],
+'std_score_time'     : [0.001, 0.002, 0.003, 0.005],
+'params'             : [{'kernel': 'poly', 'degree': 2}, ...],
+}</code></pre>
+</li>
+<li><p><strong>如果不使用交叉验证，可能会因为训练集数据的分布不均匀等情况造成模型训练的结果不可靠，从而不能获得最佳的验证效果。交叉验证通过训练集对分类器进行训练,再利用验证集来测试训练，反复测试，从而得到模型的平均值作为结果。 </strong></p>
+</li>
 </ul>
 
 </div>
@@ -14161,6 +14196,10 @@ Predicted selling price for Client 3&#39;s home: $942,666.67
 <li><strong>建议客户1的房屋销售的价格为： <code>$942,666.67</code> </strong></li>
 <li><strong>从房屋的特征值来看，这样的价格基本合理。</strong></li>
 <li><strong>因为房屋内房间的总数越高则房子的成本越高，房价也会越高；社区贫困指数越低说明人越富有；学生和老师的比例也同样反应房价的加个。综合三个特征，模型预测出的结果是合理的。</strong></li>
+</ul>
+<h4 id="&#34917;&#20805;&#65306;">&#34917;&#20805;&#65306;<a class="anchor-link" href="#&#34917;&#20805;&#65306;">&#182;</a></h4><ul>
+<li><strong>通过第二步的分析数据结果得出：
+<code>Minimum price: $105,000.00</code>, <code>Maximum price: $1,024,800.00</code>, <code>Mean price: $454,342.94</code>, <code>Median price $438,900.00</code>, <code>Standard deviation of prices: $165,171.13</code>, 所预测的房价都在分析数据的范围区间内，预测的结果合理。</strong></li>
 </ul>
 
 </div>
